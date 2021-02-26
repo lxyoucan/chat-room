@@ -1,3 +1,2 @@
-hsql是一个内置数据库，方便用于演示。
 #启动hsql 服务端 方便调试~/mac/WP2021/idea/chat-room/换成项目位置
-java -classpath  ~/java/chat-room/server/database/hsqldb.jar org.hsqldb.Server -database.0 ~/java/chat-room/server/database/.hsqldb/db -dbname.0 xdb
+java -classpath   ~/Documents/GitHub/chat-room/server/database/hsqldb.jar org.hsqldb.Server -database.0  ~/Documents/GitHub/chat-room/server/database/.hsqldb/db -dbname.0 xdb
