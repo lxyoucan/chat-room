@@ -17,3 +17,5 @@ spring:
     database-platform: org.hibernate.dialect.HSQLDialect
   jackson:
     default-property-inclusion: non_null
+server:
+  port: 8088
