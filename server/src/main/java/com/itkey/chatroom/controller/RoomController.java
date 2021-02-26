@@ -1,5 +1,13 @@
 package com.itkey.chatroom.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.itkey.chatroom.VO.ResultVO;
 import com.itkey.chatroom.dataobject.Message;
 import com.itkey.chatroom.dataobject.Room;
@@ -7,12 +15,6 @@ import com.itkey.chatroom.dataobject.User;
 import com.itkey.chatroom.service.impl.MessageServiceImpl;
 import com.itkey.chatroom.service.impl.RoomServiceImpl;
 import com.itkey.chatroom.utils.ResultVOUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * 群相关的管理
@@ -41,4 +43,16 @@ public class RoomController {
 
         return ResultVOUtil.success(roomService.joinRoom(user,room));
     }
+
+	/**加入群
+     * @param user 加群的用户
+     * @return
+     */
+    @GetMapping("/room/users")
+    public ResultVO users(){
+
+        return ResultVOUtil.success("为啥会报错？123456");
+    }
+
+
 }
