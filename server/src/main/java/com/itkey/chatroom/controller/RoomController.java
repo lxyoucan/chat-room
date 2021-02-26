@@ -49,9 +49,9 @@ public class RoomController {
      * @return
      */
     @GetMapping("/room/users")
-    public ResultVO users(){
-
-        return ResultVOUtil.success("为啥会报错？123456");
+    public ResultVO users(Long roomId){
+		
+        return ResultVOUtil.success(roomService.roomUserList(roomId));
     }
 
 

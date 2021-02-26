@@ -1,16 +1,18 @@
 package com.itkey.chatroom.service.impl;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Service;
+
 import com.itkey.chatroom.dataobject.Room;
 import com.itkey.chatroom.dataobject.User;
 import com.itkey.chatroom.dataobject.UserInRoom;
 import com.itkey.chatroom.repository.RoomRepository;
 import com.itkey.chatroom.repository.UserInRoomRepository;
 import com.itkey.chatroom.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
+import java.lang.RuntimeException;
 
 @Service
 public class RoomServiceImpl {
@@ -64,7 +66,13 @@ public class RoomServiceImpl {
         }
     }
 
-    public List<UserInRoom> roomUserList(){
-         return userInRoomRepository.findAll();
+    public List<UserInRoom> roomUserList(Long roomId){
+		 Optional<Room> roomOptional = roomRepository.findById(roomId);
+        if(!roomOptional.isPresent()){
+			System.out.println("群不存在！");
+        }
+
+
+         return userInRoomRepository.queryByRoom(roomOptional.get());
     }
 }
