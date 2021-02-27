@@ -9,14 +9,21 @@ import {LoginContext} from '../../context/LoginContext';
 
 
 let loginUser;      //当前登录用户
-export default function ChatRoomScreen() {
+let room;           //聊天室信息
+export default function ChatRoomScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
     const [isLogin, setIsLogin, user ] = useContext(LoginContext);   //上下文中存储是否登录的状态
 
+    room = route.params.chatRoom;
     useEffect(() => {
+        loadMessageDo();
         loadMessage();
         loginUser = user;
+
+        navigation.setOptions({
+            title: room.name,
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -29,7 +36,7 @@ export default function ChatRoomScreen() {
         //setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
     }, []);
     const postMessage = (text) => {
-        let postData = 'roomId=1&text=' + text + '&userId=' + loginUser.userId;
+        let postData = 'roomId='+route.params.chatRoom.id+'&text=' + text + '&userId=' + loginUser.userId;
         console.log(postData);
         fetch(serverUrl + '/send', {
             method: 'POST',
@@ -69,11 +76,14 @@ export default function ChatRoomScreen() {
 
     const loadMessageDo = ()=>{
         //console.log('-----------获取数据------------');
-        fetch(serverUrl + '/list')
+        //console.log(route.params.chatRoom.id);
+        console.log('-------room:'+room.id);
+        fetch(serverUrl + '/list?roomId='+room.id)
             .then(function (response) {
                 return response.json();
             })
             .then(function (result) {
+                console.log(JSON.stringify(result));
                 if (result.code == 0) {
                     setMessages(result.data);
                 }

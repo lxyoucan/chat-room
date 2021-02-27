@@ -10,8 +10,8 @@ import {ConfigContext} from '../context/ConfigContext';
 
 const LoginScreen = ({navigation, route}) => {
     const [isLogin, setIsLogin, user, setUser] = useContext(LoginContext);   //上下文中存储是否登录的状态
-    const [userId, setUserId] = useState('');
-    const [password, setPassword] = useState('');
+    const [userId, setUserId] = useState('lufei');
+    const [password, setPassword] = useState('123456');
 
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
 

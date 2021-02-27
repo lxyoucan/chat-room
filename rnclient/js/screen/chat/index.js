@@ -27,7 +27,9 @@ const ChatScreen = ({navigation}) => {
                  time={item.createdAt}
                  unRead={0}
                  onPress={()=>{
-                     navigation.navigate("ChatRoomScreen");
+                     navigation.navigate("ChatRoomScreen",{
+                         chatRoom: item
+                     });
                  }}
         />
     );

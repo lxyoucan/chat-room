@@ -45,7 +45,7 @@ public class MessageServiceImpl {
         }
 
         Message msg = new Message();
-        msg.setRoomId(1l);
+        msg.setRoomId(roomId);
         msg.setText(text);
         //msg.setImage("http://192.168.101.134:8080/head/01.jpeg");
         //msg.setVideo("http://192.168.101.134:8080/video/01.mp4");
@@ -66,7 +66,9 @@ public class MessageServiceImpl {
             roomId = 1l;
         }
        //return messageRepository.queryByRoomIdOrderByCreatedAtAsc(roomId);
-        return messageRepository.queryByRoomIdOrderByCreatedAtDesc(roomId);
+
+        List<Message> result = messageRepository.queryByRoomIdOrderByCreatedAtDesc(roomId);
+        return result;
     }
 
     /**
