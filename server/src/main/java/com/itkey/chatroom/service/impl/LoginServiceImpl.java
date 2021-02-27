@@ -1,8 +1,10 @@
 package com.itkey.chatroom.service.impl;
 
 import com.itkey.chatroom.VO.ResultVO;
+import com.itkey.chatroom.dataobject.User;
 import com.itkey.chatroom.dataobject.UserTotal;
 import com.itkey.chatroom.form.UserRegisterForm;
+import com.itkey.chatroom.repository.UserRepository;
 import com.itkey.chatroom.repository.UserTotalRepository;
 import com.itkey.chatroom.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ public class LoginServiceImpl {
     @Autowired
     private UserTotalRepository userTotalRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     /**
      * 用户注册
      * PS:用户注册功能，在枣庄APP中没有实质的作用，主要是为了应付appstore 审核
@@ -75,7 +79,9 @@ public class LoginServiceImpl {
         UserTotal user = new UserTotal();
         user.setUserId(form.getUserId());
         user.setName(form.getName());
-        user.setAvatar("http://temp.im/140x140/4CD964/fff");
+        if(!StringUtils.hasText(user.getAvatar())){
+            user.setAvatar("https://img-blog.csdnimg.cn/20210227171154880.png");
+        }
         //转成md5保存
         String md5Password = DigestUtils.md5DigestAsHex(form.getPassword().getBytes());
         user.setPassword(md5Password);
@@ -84,5 +90,20 @@ public class LoginServiceImpl {
         return ResultVOUtil.success("注册成功！");
     }
 
-
+    /**
+     * 根据聊天室ID 查询聊天列表
+     * @param userId
+     * @return
+     */
+    public ResultVO userQuery(String userId){
+        if(userId==null||StringUtils.isEmpty(userId)){
+            ResultVOUtil.error(-1,"userId为空！");
+        }
+        User user = userRepository.queryByUserId(userId);
+        if(user==null){
+            ResultVOUtil.error(-2,"userid:"+userId+"查无记录！");
+        }
+        //return messageRepository.queryByRoomIdOrderByCreatedAtAsc(roomId);
+        return ResultVOUtil.success(user);
+    }
 }

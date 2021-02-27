@@ -1,5 +1,7 @@
 package com.itkey.chatroom.dataobject;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itkey.chatroom.utils.serializer.Date2StringSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 
@@ -16,6 +18,7 @@ public class Room {
     @GeneratedValue
     private Long id;
     private String name;     //群主名称
+    @JsonSerialize(using = Date2StringSerializer.class)
     private Date createdAt;      //群创建时间
     private @ManyToOne @CreatedBy User owner;        //群主
     private Integer userCount;        //群人数

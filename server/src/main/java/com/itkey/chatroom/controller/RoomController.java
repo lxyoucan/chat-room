@@ -33,6 +33,13 @@ public class RoomController {
     public ResultVO creatRoom(Room room){
         return ResultVOUtil.success(roomService.createRoom(room));
     }
+    /**群列表
+     * @return
+     */
+    @GetMapping("/roomList")
+    public ResultVO roomList(){
+        return ResultVOUtil.success(roomService.roomList());
+    }
 
     /**加入群
      * @param user 加群的用户
@@ -45,12 +52,12 @@ public class RoomController {
     }
 
 	/**加入群
-     * @param user 加群的用户
+     * @param roomId 聊天室编号
      * @return
      */
     @GetMapping("/room/users")
     public ResultVO users(Long roomId){
-		
+
         return ResultVOUtil.success(roomService.roomUserList(roomId));
     }
 

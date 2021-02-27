@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 用户登录注销控制类
  * 控制类
@@ -30,5 +33,15 @@ public class LoginController {
     @ResponseBody
     public ResultVO userRegister(UserRegisterForm userRegisterForm) {
         return loginService.userRegister(userRegisterForm);
+    }
+    /**
+     * 服务器首页
+     * @return
+     */
+    @RequestMapping("/")
+    @ResponseBody
+    public String index() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return "<h1>Hi，聊天室后台服务运行正常！</h1> 现在时间："+ simpleDateFormat.format(new Date());
     }
 }

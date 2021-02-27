@@ -20,4 +20,12 @@ public class UserInRoom {
     private Long id;
     private @ManyToOne @CreatedBy User user;  //用户ID
     private @ManyToOne @CreatedBy Room room;  //群ID
+
+    public UserInRoom() {
+    }
+
+    public UserInRoom(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
 }
