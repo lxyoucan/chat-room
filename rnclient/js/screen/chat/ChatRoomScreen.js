@@ -1,38 +1,24 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useCallback, useEffect } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import { GiftedChat,Bubble,Send } from 'react-native-gifted-chat';
 // 引入中文语言包
 import 'dayjs/locale/zh-cn';
 import {View,Text,StyleSheet,SafeAreaView} from 'react-native';
+import {ConfigContext} from '../../context/ConfigContext';
+import {LoginContext} from '../../context/LoginContext';
 
-const URL_SERVER = 'http://192.168.0.101:8088';
 
 let loginUser;      //当前登录用户
 export default function ChatRoomScreen() {
     const [messages, setMessages] = useState([]);
-    const [receiver, setReceiver] = useState('lufei');
-    const [receiverUser, setReceiverUser] = useState({
-        _id: 50,
-    });
+    const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
+    const [isLogin, setIsLogin, user ] = useContext(LoginContext);   //上下文中存储是否登录的状态
+
     useEffect(() => {
         loadMessage();
+        loginUser = user;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    useEffect(() =>{
-        console.log("------切换用户-----");
-        fetch(URL_SERVER + '/user/query?userId='+receiver)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (result) {
-                if (result.code == 0) {
-                    console.log(result.data);
-                    setReceiverUser(result.data);
-                    loginUser = result.data;
-                }
-            });
-    },[receiver]);
-
 
     const onSend = useCallback((msg = []) => {
         console.log(msg);
@@ -45,7 +31,7 @@ export default function ChatRoomScreen() {
     const postMessage = (text) => {
         let postData = 'roomId=1&text=' + text + '&userId=' + loginUser.userId;
         console.log(postData);
-        fetch(URL_SERVER + '/send', {
+        fetch(serverUrl + '/send', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -83,7 +69,7 @@ export default function ChatRoomScreen() {
 
     const loadMessageDo = ()=>{
         //console.log('-----------获取数据------------');
-        fetch(URL_SERVER + '/list')
+        fetch(serverUrl + '/list')
             .then(function (response) {
                 return response.json();
             })
@@ -141,7 +127,7 @@ export default function ChatRoomScreen() {
                 renderSend={renderSend}
                 inverted={true}
                 renderUsernameOnMessage={true}
-                user={receiverUser}
+                user={user}
                alignTop={true}
             />
         </SafeAreaView>

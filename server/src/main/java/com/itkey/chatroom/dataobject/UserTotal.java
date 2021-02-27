@@ -1,5 +1,6 @@
 package com.itkey.chatroom.dataobject;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 public class UserTotal {
     @Id
     @GeneratedValue
+    @JsonProperty("_id")
     private Long id;
 
     private String userId;      //用户登录账号

@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 @Slf4j
 public class LoginServiceImpl {
@@ -91,17 +93,28 @@ public class LoginServiceImpl {
     }
 
     /**
-     * 根据聊天室ID 查询聊天列表
-     * @param userId
+     * 用户登录
+     * @param userId 登录账号
+     * @param password 用户密码
      * @return
      */
-    public ResultVO userQuery(String userId){
-        if(userId==null||StringUtils.isEmpty(userId)){
-            ResultVOUtil.error(-1,"userId为空！");
+    public ResultVO login(String userId, String password, HttpSession session){
+        if(!StringUtils.hasText(userId)){
+           return ResultVOUtil.error(-1,"用户名不能为空！");
         }
-        User user = userRepository.queryByUserId(userId);
+        if(!StringUtils.hasText(password)){
+            return ResultVOUtil.error(-2,"密码不能为空！");
+        }
+        UserTotal user = userTotalRepository.queryByUserId(userId);
+        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
         if(user==null){
-            ResultVOUtil.error(-2,"userid:"+userId+"查无记录！");
+            return ResultVOUtil.error(-3,"用户名或者密码错误！");
+        }else if(user.getPassword().equals(md5Password)){
+            //登录成功,设置session
+            user.setPassword(null);
+            session.setAttribute("LoginUser",user);
+        }else {
+            return ResultVOUtil.error(-3,"用户名或者密码错误！");
         }
         //return messageRepository.queryByRoomIdOrderByCreatedAtAsc(roomId);
         return ResultVOUtil.success(user);

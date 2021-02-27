@@ -5,19 +5,51 @@ import {
     SafeAreaView,
 } from 'react-native';
 import {LoginContext} from '../context/LoginContext';
-import {Button, InputItem, List} from '@ant-design/react-native';
+import {Button, InputItem, List, Toast} from '@ant-design/react-native';
+import {ConfigContext} from '../context/ConfigContext';
 
 const LoginScreen = ({navigation, route}) => {
     const [isLogin, setIsLogin, user, setUser] = useContext(LoginContext);   //上下文中存储是否登录的状态
-    const [username, setUsername] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
 
+    const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
+
     const loginDo = () => {
-        if (username == '') {
-            alert('用户名不能为空！');
+        if (userId == '') {
+            Toast.info('用户名不能为空！', 3);
+            return;
         } else if (password == '') {
-            alert('密码不能为空！');
+            Toast.info('密码不能为空！', 3);
+            return;
         }
+        fetch(serverUrl + '/login', {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'userId=' + userId + '&password=' + password
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(json => {
+                if(json.code!=0){
+                    alert(json.msg);
+                }else{
+                    Toast.info('登录成功！', 1);
+                    console.log(json.data);
+                    setUser(json.data);
+                    setIsLogin(true);
+                }
+            })
+            .catch(e => {
+                console.log(e.toString());
+            })
     };
 
     return (
@@ -26,9 +58,9 @@ const LoginScreen = ({navigation, route}) => {
             <List renderHeader={'用户登录'}>
                 <InputItem
                     clear
-                    value={username}
+                    value={userId}
                     onChange={value => {
-                        setUsername(value);
+                        setUserId(value);
                     }}
                     placeholder="请输入用户名"
                 >

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,6 +34,15 @@ public class LoginController {
     @ResponseBody
     public ResultVO userRegister(UserRegisterForm userRegisterForm) {
         return loginService.userRegister(userRegisterForm);
+    }
+    /**
+     * 用户登录
+     * @return
+     */
+    @RequestMapping("/login")
+    @ResponseBody
+    public ResultVO login(String userId, String password, HttpSession session) {
+        return loginService.login(userId,password,session);
     }
     /**
      * 服务器首页
