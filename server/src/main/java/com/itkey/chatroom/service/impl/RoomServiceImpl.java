@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.itkey.chatroom.VO.ResultVO;
+import com.itkey.chatroom.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import com.itkey.chatroom.dataobject.UserInRoom;
 import com.itkey.chatroom.repository.RoomRepository;
 import com.itkey.chatroom.repository.UserInRoomRepository;
 import com.itkey.chatroom.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.lang.RuntimeException;
 
@@ -34,12 +38,25 @@ public class RoomServiceImpl {
      * @param room 群信息
      * @return
      */
-    public Room createRoom(Room room) {
+    @Transactional
+    public ResultVO createRoom(Room room, String userId) {
         room.setCreatedAt(new Date());
         room.setUserCount(1);
-        Optional<User> userOptional = userRepository.findById(1l);
-        room.setOwner(userOptional.get());
-        return roomRepository.save(room);
+        if(!StringUtils.hasText(userId)){
+            return ResultVOUtil.error(-1,"未登录，无权创建群！");
+        }
+        User user = userRepository.queryByUserId(userId);
+        if(user==null){
+            return ResultVOUtil.error(-1,"未登录，无权创建群！");
+        }
+        if(!StringUtils.hasText(room.getName())){
+            return ResultVOUtil.error(-2,"创建群，要给它取个名吧！");
+        }
+        if(!StringUtils.hasText(room.getAvatar())){
+            return ResultVOUtil.error(-3,"创建群，设置个头像吧！");
+        }
+        room.setOwner(user);
+        return ResultVOUtil.success(roomRepository.save(room));
     }
 
     /**

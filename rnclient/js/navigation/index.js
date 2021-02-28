@@ -10,6 +10,7 @@ import LoginScreen from '../screen/LoginScreen';
 import UserListScreen from '../screen/UserListScreen';
 import RegisterScreen from '../screen/RegisterScreen';
 import ConfigScreen from '../screen/ConfigScreen';
+import CreateRoomScreen from '../screen/CreateRoomScreen';
 import {LoginContext} from '../context/LoginContext';
 import {ThemeContext} from '../context/ThemeContext';
 const Stack = createStackNavigator();
@@ -82,6 +83,11 @@ function App() {
                 name="ChatRoomScreen"
                 component={ChatRoomScreen}
                 options={({navigation})=>navOptions(navigation,"聊天室")}
+            />
+            <Stack.Screen
+                name="CreateRoomScreen"
+                component={CreateRoomScreen}
+                options={({navigation})=>navOptions(navigation,"创建群")}
             />
         </Stack.Navigator>
     );

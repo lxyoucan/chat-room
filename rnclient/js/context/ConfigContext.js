@@ -12,9 +12,10 @@ export const ConfigContext = createContext();
 export const ConfigProvider = props => {
     //服务器端连接地址
     const [serverUrl,setServerUrl] = useState(SERVER_URL);
+    const [allRoom,setAllRoom] = useState([]);
 
     return (
-        <ConfigContext.Provider value={[serverUrl,setServerUrl]}>
+        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom]}>
             {props.children}
         </ConfigContext.Provider>
     );

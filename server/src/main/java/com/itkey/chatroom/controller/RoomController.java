@@ -30,8 +30,8 @@ public class RoomController {
      * @return
      */
     @PostMapping("/creatRoom")
-    public ResultVO creatRoom(Room room){
-        return ResultVOUtil.success(roomService.createRoom(room));
+    public ResultVO creatRoom(Room room,String userId){
+        return roomService.createRoom(room,userId);
     }
     /**群列表
      * @return

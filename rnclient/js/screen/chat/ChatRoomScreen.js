@@ -10,6 +10,7 @@ import {LoginContext} from '../../context/LoginContext';
 
 let loginUser;      //当前登录用户
 let room;           //聊天室信息
+let timer;  //计时器
 export default function ChatRoomScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
@@ -24,6 +25,11 @@ export default function ChatRoomScreen({route, navigation}) {
         navigation.setOptions({
             title: room.name,
         });
+        return () => {
+            console.log("------------组件被卸载了!停止定时器--------");
+            timer && clearTimeout(timer);
+            timer = null;
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -61,7 +67,7 @@ export default function ChatRoomScreen({route, navigation}) {
             });
     };
 
-    let timer;  //计时器
+
     /**
      * 加载聊天信息
      */

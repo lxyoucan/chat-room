@@ -17,10 +17,11 @@ public class Room {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;     //群主名称
+    private String name;     //群名称
     @JsonSerialize(using = Date2StringSerializer.class)
     private Date createdAt;      //群创建时间
     private @ManyToOne @CreatedBy User owner;        //群主
     private Integer userCount;        //群人数
     private String avatar;       //群图标
+    private String describe;     //群简介
 }

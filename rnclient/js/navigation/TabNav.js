@@ -48,7 +48,7 @@ export default function Navigation({colorScheme}) {
            <Tab.Screen
                 name="message"
                 component={MessageNavigator}
-                options={{title: '云',  }}
+                options={{title: '加群',  }}
             />
 
             <Tab.Screen
@@ -70,7 +70,7 @@ function MessageNavigator() {
                 name="School"
                  component={MessageScreen}
                 options={{
-                    headerTitle: '消息',
+                    headerTitle: '加群',
                     headerLeft: null,
                     headerTitleAlign: 'center',
                     headerStyle: {
