@@ -13,6 +13,14 @@ public interface UserInRoomRepository extends JpaRepository<UserInRoom, Long> {
     Integer countByUserAndRoom(User user, Room room);
 	List<UserInRoom> queryByRoom(Room room);
 
+    /**
+     * 退群
+     * 也就是删除 用户与群关系数据
+     * @param user
+     * @param room
+     * @return
+     */
+	Integer deleteByUserAndRoom(User user,Room room);
 
     /**
      * 根据群来查所有的用户列表，仅查用户信息,不包含多余的群信息

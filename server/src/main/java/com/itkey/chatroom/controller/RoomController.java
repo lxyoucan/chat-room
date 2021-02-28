@@ -34,6 +34,17 @@ public class RoomController {
     public ResultVO creatRoom(Room room,String userId){
         return roomService.createRoom(room,userId);
     }
+
+    /**
+     * 退群
+     * @param roomId 群
+     * @param userId 用户id
+     * @return
+     */
+    @PostMapping("/exitRoom")
+    public ResultVO exitRoom(Long roomId, Long userId){
+        return roomService.exitRoom(roomId,userId);
+    }
     /**群列表
      * @return
      */

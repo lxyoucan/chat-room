@@ -170,4 +170,30 @@ public class RoomServiceImpl {
     public List<Room> roomList() {
         return roomRepository.findAll();
     }
+
+    /**
+     * 退群功能
+     * @param roomId
+     * @param userId
+     * @return
+     */
+    @Transactional
+    public ResultVO exitRoom(Long roomId, Long userId) {
+        if(roomId==null){
+            return ResultVOUtil.error(-1, "参数roomId不能为空!");
+        }
+        if(userId==null){
+            return ResultVOUtil.error(-2, "参数userId不能为空!");
+        }
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            return ResultVOUtil.error(-3, "[" + userId + "]用户不存在！");
+        }
+        Optional<Room> roomOptional = roomRepository.findById(roomId);
+        if (!roomOptional.isPresent()) {
+            return ResultVOUtil.error(-4, "[" + roomId + "]房间不存在！");
+        }
+        userInRoomRepository.deleteByUserAndRoom(userOptional.get(),roomOptional.get());
+        return ResultVOUtil.success();
+    }
 }

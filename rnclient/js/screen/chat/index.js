@@ -9,8 +9,10 @@ import {LoginContext} from '../../context/LoginContext';
 let timer;      //  计时器
 const ChatScreen = ({navigation}) => {
    // const [backgroundColor,setBackgroundColor] = useContext(ThemeContext);
-    const [roomList,setRoomList] = useState([]);
+    //const [roomList,setRoomList] = useState([]);
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
+    const myRoomList = useContext(ConfigContext)[6]; //服务器的请求地址
+    const setMyRoomList = useContext(ConfigContext)[7]; //服务器的请求地址
     const user = useContext(LoginContext)[2];   //上下文中存储是否登录的状态
     useEffect(() => {
         loadMessageDo();
@@ -40,7 +42,7 @@ const ChatScreen = ({navigation}) => {
             })
             .then(function(myJson) {
                 console.log(myJson);
-                setRoomList(myJson.data);
+                setMyRoomList(myJson.data);
             });
     };
     const renderItem = ({ item }) => (
@@ -59,7 +61,7 @@ const ChatScreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={roomList}
+                data={myRoomList}
                 renderItem={renderItem}
                 keyExtractor={item => item.id+''}
             />

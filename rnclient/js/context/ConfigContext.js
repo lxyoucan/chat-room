@@ -15,9 +15,11 @@ export const ConfigProvider = props => {
     const [allRoom,setAllRoom] = useState([]);
     // 为了邀请群成员，能立即生效，所以使用全局变量
     const [roomUsers,setRoomUsers] = useState([]);
+    //当前用户所加的群列表
+    const [myRoomList,setMyRoomList] = useState([]);
 
     return (
-        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom,roomUsers,setRoomUsers]}>
+        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom,roomUsers,setRoomUsers,myRoomList,setMyRoomList]}>
             {props.children}
         </ConfigContext.Provider>
     );
