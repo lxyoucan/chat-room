@@ -13,9 +13,11 @@ export const ConfigProvider = props => {
     //服务器端连接地址
     const [serverUrl,setServerUrl] = useState(SERVER_URL);
     const [allRoom,setAllRoom] = useState([]);
+    // 为了邀请群成员，能立即生效，所以使用全局变量
+    const [roomUsers,setRoomUsers] = useState([]);
 
     return (
-        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom]}>
+        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom,roomUsers,setRoomUsers]}>
             {props.children}
         </ConfigContext.Provider>
     );

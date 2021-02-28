@@ -1,11 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useCallback, useEffect, useContext} from 'react';
-import { GiftedChat,Bubble,Send } from 'react-native-gifted-chat';
+import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
 // 引入中文语言包
 import 'dayjs/locale/zh-cn';
-import {View,Text,StyleSheet,SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {ConfigContext} from '../../context/ConfigContext';
 import {LoginContext} from '../../context/LoginContext';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 
 let loginUser;      //当前登录用户
@@ -14,7 +16,7 @@ let timer;  //计时器
 export default function ChatRoomScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
-    const [isLogin, setIsLogin, user ] = useContext(LoginContext);   //上下文中存储是否登录的状态
+    const [isLogin, setIsLogin, user] = useContext(LoginContext);   //上下文中存储是否登录的状态
 
     room = route.params.chatRoom;
     useEffect(() => {
@@ -24,9 +26,23 @@ export default function ChatRoomScreen({route, navigation}) {
 
         navigation.setOptions({
             title: room.name,
-        });
+            headerRight: () => {
+                return (
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("RoomInfoScreen",{
+                            room:room
+                        });
+                    }}>
+                        <View style={{marginRight: 10}}>
+                            <AntDesign name="ellipsis1" size={28} color={'white'}/>
+                        </View>
+                    </TouchableOpacity>
+                );
+            },
+        })
+        ;
         return () => {
-            console.log("------------组件被卸载了!停止定时器--------");
+            console.log('------------组件被卸载了!停止定时器--------');
             timer && clearTimeout(timer);
             timer = null;
         };
@@ -42,7 +58,7 @@ export default function ChatRoomScreen({route, navigation}) {
         //setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
     }, []);
     const postMessage = (text) => {
-        let postData = 'roomId='+route.params.chatRoom.id+'&text=' + text + '&userId=' + loginUser.userId;
+        let postData = 'roomId=' + route.params.chatRoom.id + '&text=' + text + '&userId=' + loginUser.userId;
         console.log(postData);
         fetch(serverUrl + '/send', {
             method: 'POST',
@@ -50,7 +66,7 @@ export default function ChatRoomScreen({route, navigation}) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: postData
+            body: postData,
         })
             .then(response => {
                 if (response.ok) {
@@ -80,11 +96,11 @@ export default function ChatRoomScreen({route, navigation}) {
         }
     };
 
-    const loadMessageDo = ()=>{
+    const loadMessageDo = () => {
         //console.log('-----------获取数据------------');
         //console.log(route.params.chatRoom.id);
-        console.log('-------room:'+room.id);
-        fetch(serverUrl + '/list?roomId='+room.id)
+        console.log('-------room:' + room.id);
+        fetch(serverUrl + '/list?roomId=' + room.id)
             .then(function (response) {
                 return response.json();
             })
@@ -144,10 +160,10 @@ export default function ChatRoomScreen({route, navigation}) {
                 inverted={true}
                 renderUsernameOnMessage={true}
                 user={user}
-               alignTop={true}
+                alignTop={true}
             />
         </SafeAreaView>
-    )
+    );
 }
 const styles = StyleSheet.create({
     mainContent: {
@@ -158,10 +174,10 @@ const styles = StyleSheet.create({
         width: 63,
         height: 32,
         borderRadius: 3,
-        backgroundColor:'#07c160',
+        backgroundColor: '#07c160',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom:5,
-        marginRight:5,
-    }
+        marginBottom: 5,
+        marginRight: 5,
+    },
 });

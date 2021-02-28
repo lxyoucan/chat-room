@@ -42,18 +42,18 @@ public class RoomServiceImpl {
     public ResultVO createRoom(Room room, String userId) {
         room.setCreatedAt(new Date());
         room.setUserCount(1);
-        if(!StringUtils.hasText(userId)){
-            return ResultVOUtil.error(-1,"未登录，无权创建群！");
+        if (!StringUtils.hasText(userId)) {
+            return ResultVOUtil.error(-1, "未登录，无权创建群！");
         }
         User user = userRepository.queryByUserId(userId);
-        if(user==null){
-            return ResultVOUtil.error(-1,"未登录，无权创建群！");
+        if (user == null) {
+            return ResultVOUtil.error(-1, "未登录，无权创建群！");
         }
-        if(!StringUtils.hasText(room.getName())){
-            return ResultVOUtil.error(-2,"创建群，要给它取个名吧！");
+        if (!StringUtils.hasText(room.getName())) {
+            return ResultVOUtil.error(-2, "创建群，要给它取个名吧！");
         }
-        if(!StringUtils.hasText(room.getAvatar())){
-            return ResultVOUtil.error(-3,"创建群，设置个头像吧！");
+        if (!StringUtils.hasText(room.getAvatar())) {
+            return ResultVOUtil.error(-3, "创建群，设置个头像吧！");
         }
         room.setOwner(user);
         return ResultVOUtil.success(roomRepository.save(room));
@@ -71,10 +71,10 @@ public class RoomServiceImpl {
         Optional<Room> roomOptional = roomRepository.findById(roomId);
 
         if (!userOptional.isPresent()) {
-            return ResultVOUtil.error(-1,"用户不存在！");
+            return ResultVOUtil.error(-1, "用户不存在！");
         }
         if (!roomOptional.isPresent()) {
-            return ResultVOUtil.error(-2,"错误的群id！");
+            return ResultVOUtil.error(-2, "错误的群id！");
         }
         //判断用户是否已经加过群了
         User user = userOptional.get();
@@ -82,7 +82,7 @@ public class RoomServiceImpl {
         Integer integer = userInRoomRepository.countByUserAndRoom(user, room);
         if (integer > 0) {
 
-            return ResultVOUtil.error(-3,"重复加群！");
+            return ResultVOUtil.error(-3, "重复加群！");
         }
 
         UserInRoom userInRoom = new UserInRoom();
@@ -92,10 +92,16 @@ public class RoomServiceImpl {
         if (result != null) {
             return ResultVOUtil.success("成功进群！");
         } else {
-            return ResultVOUtil.error(-4,"数据错误！");
+            return ResultVOUtil.error(-4, "数据错误！");
         }
     }
 
+    /**
+     * 查询群成员列表
+     *
+     * @param roomId
+     * @return
+     */
     public List<User> roomUserList(Long roomId) {
         if (roomId == null) return null;
         Optional<Room> roomOptional = roomRepository.findById(roomId);
@@ -104,7 +110,7 @@ public class RoomServiceImpl {
             return null;
         }
         //return userInRoomRepository.queryByRoom(roomOptional.get());
-        List<UserInRoom> result =userInRoomRepository.users(roomOptional.get());
+        List<UserInRoom> result = userInRoomRepository.users(roomOptional.get());
         List<User> userList = new ArrayList<>();
         for (UserInRoom userInRoom :
                 result) {
@@ -114,18 +120,40 @@ public class RoomServiceImpl {
     }
 
     /**
+     * 查询没有在群中的好友
+     *
+     * @param roomId
+     * @return
+     */
+    public List<User> notInUsers(Long roomId) {
+        //todo：性能需要优化，目前只是个demo页面数据不多，就偷懒了
+        List<User> allUser = userRepository.findAll();
+        List<User> roomUser = roomUserList(roomId);
+        List<User> result = new ArrayList<>();
+        for (User user :
+                allUser) {
+            if (!roomUser.contains(user)) {     //不在群中
+                result.add(user);
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * 根据用户id 查询相关群列表
+     *
      * @param userId
      * @return
      */
     public ResultVO userRooms(Long userId) {
-        if (userId == null) return ResultVOUtil.error(-1,"用户未登录");
+        if (userId == null) return ResultVOUtil.error(-1, "用户未登录");
         Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
-            return ResultVOUtil.error(-2,"["+userId+"]用户不存在！");
+            return ResultVOUtil.error(-2, "[" + userId + "]用户不存在！");
         }
         //return userInRoomRepository.queryByRoom(roomOptional.get());
-        List<UserInRoom> result =userInRoomRepository.rooms(userOptional.get());
+        List<UserInRoom> result = userInRoomRepository.rooms(userOptional.get());
         List<Room> roomList = new ArrayList<>();
         for (UserInRoom userInRoom :
                 result) {
@@ -136,9 +164,10 @@ public class RoomServiceImpl {
 
     /**
      * 群列表
+     *
      * @return
      */
-    public List<Room> roomList(){
-       return roomRepository.findAll();
+    public List<Room> roomList() {
+        return roomRepository.findAll();
     }
 }

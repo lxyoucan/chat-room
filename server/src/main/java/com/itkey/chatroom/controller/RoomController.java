@@ -61,6 +61,16 @@ public class RoomController {
 
         return ResultVOUtil.success(roomService.roomUserList(roomId));
     }
+    /**查询未进群的好友，用于邀请进群
+     * todo: 增加好友功能。暂时没有好友功能，默认所有用户都是好友
+     * @param roomId 聊天室编号
+     * @return
+     */
+    @GetMapping("/room/notInUsers")
+    public ResultVO notInUsers(Long roomId){
+
+        return ResultVOUtil.success(roomService.notInUsers(roomId));
+    }
     /**查询用户的所有群
      * @param userId 用户编号
      * @return

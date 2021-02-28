@@ -11,6 +11,9 @@ import UserListScreen from '../screen/UserListScreen';
 import RegisterScreen from '../screen/RegisterScreen';
 import ConfigScreen from '../screen/ConfigScreen';
 import CreateRoomScreen from '../screen/CreateRoomScreen';
+import RoomInfoScreen from '../screen/RoomInfoScreen';
+import InvitationJoinRoomScreen from '../screen/InvitationJoinRoomScreen';
+import ThemeScreen from '../screen/ThemeScreen';
 import {LoginContext} from '../context/LoginContext';
 import {ThemeContext} from '../context/ThemeContext';
 const Stack = createStackNavigator();
@@ -88,6 +91,21 @@ function App() {
                 name="CreateRoomScreen"
                 component={CreateRoomScreen}
                 options={({navigation})=>navOptions(navigation,"创建群")}
+            />
+            <Stack.Screen
+                name="RoomInfoScreen"
+                component={RoomInfoScreen}
+                options={({navigation})=>navOptions(navigation,"群信息")}
+            />
+            <Stack.Screen
+                name="InvitationJoinRoomScreen"
+                component={InvitationJoinRoomScreen}
+                options={({navigation})=>navOptions(navigation,"邀请进群")}
+            />
+            <Stack.Screen
+                name="ThemeScreen"
+                component={ThemeScreen}
+                options={({navigation})=>navOptions(navigation,"主题设置")}
             />
         </Stack.Navigator>
     );
