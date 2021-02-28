@@ -66,22 +66,23 @@ public class RoomServiceImpl {
      * @param roomId 群id
      * @return
      */
-    public String joinRoom(Long userId, Long roomId) {
+    public ResultVO joinRoom(Long userId, Long roomId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Room> roomOptional = roomRepository.findById(roomId);
 
         if (!userOptional.isPresent()) {
-            return "用户不存在！";
+            return ResultVOUtil.error(-1,"用户不存在！");
         }
         if (!roomOptional.isPresent()) {
-            return "错误的群id！";
+            return ResultVOUtil.error(-2,"错误的群id！");
         }
         //判断用户是否已经加过群了
         User user = userOptional.get();
         Room room = roomOptional.get();
         Integer integer = userInRoomRepository.countByUserAndRoom(user, room);
         if (integer > 0) {
-            return "重复加群！";
+
+            return ResultVOUtil.error(-3,"重复加群！");
         }
 
         UserInRoom userInRoom = new UserInRoom();
@@ -89,9 +90,9 @@ public class RoomServiceImpl {
         userInRoom.setRoom(room);
         UserInRoom result = userInRoomRepository.save(userInRoom);
         if (result != null) {
-            return "成功进群！";
+            return ResultVOUtil.success("成功进群！");
         } else {
-            return "错误！";
+            return ResultVOUtil.error(-4,"数据错误！");
         }
     }
 
@@ -110,6 +111,27 @@ public class RoomServiceImpl {
             userList.add(userInRoom.getUser());
         }
         return userList;
+    }
+
+    /**
+     * 根据用户id 查询相关群列表
+     * @param userId
+     * @return
+     */
+    public ResultVO userRooms(Long userId) {
+        if (userId == null) return ResultVOUtil.error(-1,"用户未登录");
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            return ResultVOUtil.error(-2,"["+userId+"]用户不存在！");
+        }
+        //return userInRoomRepository.queryByRoom(roomOptional.get());
+        List<UserInRoom> result =userInRoomRepository.rooms(userOptional.get());
+        List<Room> roomList = new ArrayList<>();
+        for (UserInRoom userInRoom :
+                result) {
+            roomList.add(userInRoom.getRoom());
+        }
+        return ResultVOUtil.success(roomList);
     }
 
     /**

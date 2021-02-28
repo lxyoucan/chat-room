@@ -10,10 +10,11 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screen/chat/index';
-import MessageScreen from '../screen/MessageScreen';
+import RoomManagerScreen from '../screen/RoomManagerScreen';
 import SettingsScreen from '../screen/SettingsScreen';
 import {useContext, useEffect, useState} from 'react';
 import {ThemeContext} from '../context/ThemeContext';
+import {LoginContext} from '../context/LoginContext';
 
 export default function Navigation({colorScheme}) {
     const [backgroundColor] = useContext(ThemeContext);
@@ -67,8 +68,8 @@ function MessageNavigator() {
     return (
         <TabStack.Navigator>
             <TabStack.Screen
-                name="School"
-                 component={MessageScreen}
+                name="RoomManagerScreen"
+                 component={RoomManagerScreen}
                 options={{
                     headerTitle: '加群',
                     headerLeft: null,
@@ -90,7 +91,7 @@ function SettingsScreenNavigator() {
     return (
         <TabStack.Navigator>
             <TabStack.Screen
-                name="School"
+                name="SettingsScreen"
                 component={SettingsScreen}
                 options={{
                     headerTitle: '我的',
@@ -109,13 +110,14 @@ function SettingsScreenNavigator() {
 }
 function HomeScreenNavigator() {
     const [backgroundColor,setBackgroundColor] = useContext(ThemeContext);
+    const user = useContext(LoginContext)[2];   //上下文中存储是否登录的状态
     return (
         <TabStack.Navigator>
             <TabStack.Screen
-                name="School"
+                name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    headerTitle: '消息',
+                    headerTitle: user.name,
                     headerLeft: null,
                     headerTitleAlign: 'center',
                     headerStyle: {

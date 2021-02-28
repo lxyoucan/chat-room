@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itkey.chatroom.VO.ResultVO;
@@ -45,13 +46,13 @@ public class RoomController {
      * @param user 加群的用户
      * @return
      */
-    @PostMapping("/joinRoom")
+    @RequestMapping("/joinRoom")
     public ResultVO joinRoom(Long user,Long room){
 
-        return ResultVOUtil.success(roomService.joinRoom(user,room));
+        return roomService.joinRoom(user,room);
     }
 
-	/**加入群
+	/**查询群中所有成员
      * @param roomId 聊天室编号
      * @return
      */
@@ -59,6 +60,15 @@ public class RoomController {
     public ResultVO users(Long roomId){
 
         return ResultVOUtil.success(roomService.roomUserList(roomId));
+    }
+    /**查询用户的所有群
+     * @param userId 用户编号
+     * @return
+     */
+    @GetMapping("/user/rooms")
+    public ResultVO userRooms(Long userId){
+
+        return roomService.userRooms(userId);
     }
 
 

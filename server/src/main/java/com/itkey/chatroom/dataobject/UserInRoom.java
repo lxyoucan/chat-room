@@ -28,4 +28,9 @@ public class UserInRoom {
         this.id = id;
         this.user = user;
     }
+
+    public UserInRoom(Long id, Room room) {
+        this.id = id;
+        this.room = room;
+    }
 }

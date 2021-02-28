@@ -21,4 +21,11 @@ public interface UserInRoomRepository extends JpaRepository<UserInRoom, Long> {
      */
     @Query(value = "SELECT new UserInRoom (p.id,p.user) FROM UserInRoom p WHERE p.room= :roomId")
 	List<UserInRoom> users(@Param(value = "roomId")Room roomId);
+    /**
+     * 根据群来查所有的用户列表，仅查用户信息,不包含多余的群信息
+     * @param userId 用户id
+     * @return
+     */
+    @Query(value = "SELECT new UserInRoom (p.id,p.room) FROM UserInRoom p WHERE p.user= :userId")
+    List<UserInRoom> rooms(@Param(value = "userId")User userId);
 }
