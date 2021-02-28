@@ -2,16 +2,20 @@ package com.itkey.chatroom.service.impl;
 
 import com.itkey.chatroom.VO.ResultVO;
 import com.itkey.chatroom.dataobject.Message;
+import com.itkey.chatroom.dataobject.Room;
 import com.itkey.chatroom.dataobject.User;
 import com.itkey.chatroom.repository.MessageRepository;
+import com.itkey.chatroom.repository.RoomRepository;
 import com.itkey.chatroom.repository.UserRepository;
 import com.itkey.chatroom.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MessageServiceImpl {
@@ -21,6 +25,8 @@ public class MessageServiceImpl {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
     /**
      *
      * @param roomId 房间ID
@@ -28,6 +34,7 @@ public class MessageServiceImpl {
      * @param userId 用户名
      * @return
      */
+    @Transactional
     public ResultVO sendMessage(Long roomId,String text,String userId){
         if(roomId==null){
             return ResultVOUtil.error(-1,"roomId为空！");
@@ -43,6 +50,10 @@ public class MessageServiceImpl {
         if(StringUtils.isEmpty(user)){
             return ResultVOUtil.error(-4,"发件人不存在！");
         }
+        Optional<Room> roomOptional = roomRepository.findById(roomId);
+        if (!roomOptional.isPresent()) {
+            return ResultVOUtil.error(-5, "[" + roomId + "]房间不存在！");
+        }
 
         Message msg = new Message();
         msg.setRoomId(roomId);
@@ -50,9 +61,16 @@ public class MessageServiceImpl {
         //msg.setImage("http://192.168.101.134:8080/head/01.jpeg");
         //msg.setVideo("http://192.168.101.134:8080/video/01.mp4");
         msg.setUser(user);
-        msg.setCreatedAt(new Date());
+        Date now =new Date();
+        msg.setCreatedAt(now);
         msg.setRoomId(roomId);
         messageRepository.save(msg);
+
+        //保存群最新数据
+        Room  room= roomOptional.get();
+        room.setLastAt(now);
+        room.setLastMsg(text);
+        roomRepository.save(room);
         return ResultVOUtil.success();
     }
 

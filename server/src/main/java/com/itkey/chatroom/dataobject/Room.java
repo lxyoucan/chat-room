@@ -24,4 +24,8 @@ public class Room {
     private Integer userCount;        //群人数
     private String avatar;       //群图标
     private String describe;     //群简介
+
+    private String lastMsg;     //最新一行的消息
+    @JsonSerialize(using = Date2StringSerializer.class)
+    private Date lastAt;      //最新发的消息的时间
 }
