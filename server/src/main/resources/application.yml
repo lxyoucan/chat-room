@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: org.hsqldb.jdbcDriver
     #发布用内置数据库，开发用server
-    #url: jdbc:hsqldb:file:~/.hsqldb/db
-    url: jdbc:hsqldb:hsql://localhost:9001/xdb
+    url: jdbc:hsqldb:file:~/.hsqldb/db
+    #url: jdbc:hsqldb:hsql://localhost:9001/xdb
     username: sa
     password:
   jpa:
