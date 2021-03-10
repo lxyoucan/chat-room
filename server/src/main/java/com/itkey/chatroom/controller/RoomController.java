@@ -19,6 +19,7 @@ import com.itkey.chatroom.utils.ResultVOUtil;
 
 /**
  * 群相关的管理
+ * TODO: 当前只是个DEMO，没有对用户权限做严格的校验，实际项目中必须权限校验
  */
 @RestController
 public class RoomController {
@@ -45,6 +46,18 @@ public class RoomController {
     public ResultVO exitRoom(Long roomId, Long userId){
         return roomService.exitRoom(roomId,userId);
     }
+
+
+    /**
+     * 退群
+     * @param roomId 群
+     * @param userId 用户id
+     * @return
+     */
+    @PostMapping("/exitRoomOnlyOne")
+    public ResultVO exitRoomOnlyOne(Long roomId, Long userId){
+        return roomService.exitRoomOnlyOne(roomId,userId);
+    }
     /**群列表
      * @return
      */
@@ -53,14 +66,25 @@ public class RoomController {
         return ResultVOUtil.success(roomService.roomList());
     }
 
+
     /**加入群
      * @param user 加群的用户
      * @return
      */
     @RequestMapping("/joinRoom")
     public ResultVO joinRoom(Long user,Long room){
-
+        //
         return roomService.joinRoom(user,room);
+    }
+
+    /**加入群
+     * @param user 转让给的用户
+     * @param room 群
+     * @return
+     */
+    @RequestMapping("/transferRoom")
+    public ResultVO transferRoom(Long user,Long room){
+        return roomService.transferRoom(user,room);
     }
 
 	/**查询群中所有成员

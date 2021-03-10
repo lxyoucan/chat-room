@@ -46,6 +46,10 @@ const CreateRoomScreen = ({navigation,route}) => {
                             setAllRoom(myJson.data);
                             //返回上一页
                             navigation.goBack();
+                            //增加进入群聊天界面
+                            navigation.navigate('ChatRoomScreen', {
+                                chatRoom: json.data,
+                            });
                         });
                 }else{
                     alert(json.msg);

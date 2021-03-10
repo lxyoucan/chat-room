@@ -14,6 +14,7 @@ import CreateRoomScreen from '../screen/CreateRoomScreen';
 import RoomInfoScreen from '../screen/RoomInfoScreen';
 import InvitationJoinRoomScreen from '../screen/InvitationJoinRoomScreen';
 import ThemeScreen from '../screen/ThemeScreen';
+import TransferRoomScreen from '../screen/TransferRoomScreen';
 import {LoginContext} from '../context/LoginContext';
 import {ThemeContext} from '../context/ThemeContext';
 const Stack = createStackNavigator();
@@ -101,6 +102,11 @@ function App() {
                 name="InvitationJoinRoomScreen"
                 component={InvitationJoinRoomScreen}
                 options={({navigation})=>navOptions(navigation,"邀请进群")}
+            />
+            <Stack.Screen
+                name="TransferRoomScreen"
+                component={TransferRoomScreen}
+                options={({navigation})=>navOptions(navigation,"转让群")}
             />
             <Stack.Screen
                 name="ThemeScreen"

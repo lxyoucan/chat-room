@@ -27,7 +27,6 @@ public class LoginController {
 
     /**
      * 用户注册
-     * PS:用户注册功能，在枣庄APP中没有实质的作用，主要是为了应付appstore 审核
      * @return
      */
     @RequestMapping("/userRegister")
@@ -52,6 +51,6 @@ public class LoginController {
     @ResponseBody
     public String index() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return "<h1>Hi，聊天室后台服务运行正常！</h1> 现在时间："+ simpleDateFormat.format(new Date());
+        return "<h1>Hi，聊天室后台服务运行正常！2333</h1> 现在时间："+ simpleDateFormat.format(new Date());
     }
 }

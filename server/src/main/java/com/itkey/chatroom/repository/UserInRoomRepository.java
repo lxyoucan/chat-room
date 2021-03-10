@@ -23,6 +23,13 @@ public interface UserInRoomRepository extends JpaRepository<UserInRoom, Long> {
 	Integer deleteByUserAndRoom(User user,Room room);
 
     /**
+     * 查询出成员娄
+     * @param room 群
+     * @return
+     */
+	Integer countByRoom(Room room);
+
+    /**
      * 根据群来查所有的用户列表，仅查用户信息,不包含多余的群信息
      * @param roomId
      * @return

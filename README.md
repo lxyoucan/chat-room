@@ -18,8 +18,10 @@
 7. 退出群聊
 # 打包部署
 跳过测试打包
-mvn clean package -Dmaven.test.skip=true
-nohup java -jar sg.jar > catalina.out 2>&1 &
+
+```mvn clean package -Dmaven.test.skip=true```
+
+```nohup java -jar sg.jar > catalina.out 2>&1 &```
 
 
 

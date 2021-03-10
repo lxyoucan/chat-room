@@ -17,7 +17,7 @@ export default function ChatRoomScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [serverUrl] = useContext(ConfigContext); //服务器的请求地址
     const [isLogin, setIsLogin, user] = useContext(LoginContext);   //上下文中存储是否登录的状态
-
+    const setRoom =useContext(ConfigContext)[9];        //当前聊天室的信息
     room = route.params.chatRoom;
     useEffect(() => {
         loadMessageDo();
@@ -29,6 +29,7 @@ export default function ChatRoomScreen({route, navigation}) {
             headerRight: () => {
                 return (
                     <TouchableOpacity onPress={()=>{
+                        setRoom(room);      //设置全局参数
                         navigation.navigate("RoomInfoScreen",{
                             room:room
                         });

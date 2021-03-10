@@ -17,9 +17,11 @@ export const ConfigProvider = props => {
     const [roomUsers,setRoomUsers] = useState([]);
     //当前用户所加的群列表
     const [myRoomList,setMyRoomList] = useState([]);
+    //最新打开的群，群的基本信息
+    const [room,setRoom] = useState([]);
 
     return (
-        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom,roomUsers,setRoomUsers,myRoomList,setMyRoomList]}>
+        <ConfigContext.Provider value={[serverUrl,setServerUrl,allRoom,setAllRoom,roomUsers,setRoomUsers,myRoomList,setMyRoomList,room,setRoom]}>
             {props.children}
         </ConfigContext.Provider>
     );
